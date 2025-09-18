@@ -1,10 +1,10 @@
 package Graph;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class listImplementation {
     static ArrayList<Integer> adj[];
+    static int V;
 
     listImplementation(int V) {
         adj = new ArrayList[V+1];
@@ -28,11 +28,57 @@ public class listImplementation {
         }
     }
 
+    static void BFS(int n) {
+        boolean[] visited = new boolean[V+1];
+        Queue<Integer> q = new LinkedList<>();
+        visited[n] = true;
+        q.add(n);
+
+        while(!q.isEmpty()) {
+            n = q.poll();
+            System.out.print(n + " ");
+
+            Iterator<Integer> i = adj[n].listIterator();
+            while (i.hasNext()) {
+                int x = i.next();
+                if(!visited[x]) {
+                    visited[x] = true;
+                    q.add(x);
+                }
+            }
+        }
+
+//        while (!q.isEmpty()) {
+//            n = q.poll();
+//            System.out.print(n + " ");
+//
+//            for (int x : adj[n]) {
+//                if (!visited[x]) {
+//                    visited[x] = true;
+//                    q.add(x);
+//                }
+//            }
+//        }
+    }
+
+    static void DFS(int n, boolean[] visited) {
+        visited[n] = true;
+        System.out.print(n + " ");
+
+        Iterator<Integer> i = adj[n].listIterator();
+        while (i.hasNext()) {
+            int x = i.next();
+            if(!visited[x]) {
+                DFS(x, visited);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Enter no. of vertices : ");
-        int V = sc.nextInt();
+        V = sc.nextInt();
 
         System.out.print("Enter no. of Edges : ");
         int E = sc.nextInt();
@@ -48,5 +94,13 @@ public class listImplementation {
 
         System.out.println("Adjacency List : ");
         printGraph(V);
+
+        System.out.print("BFS : ");
+        BFS(V);
+        System.out.println();
+
+        System.out.print("DFS : ");
+        boolean[] visited = new boolean[V+1];
+        DFS(V, visited);
     }
 }
