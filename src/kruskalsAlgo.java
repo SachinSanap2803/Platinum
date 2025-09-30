@@ -39,9 +39,8 @@ public class kruskalsAlgo {
             subSets[rootX].parent = rootY;
         } else {
             subSets[rootY].parent = rootX;
+            subSets[rootX].rank++;
         }
-
-        subSets[rootX].rank++;
     }
 
     public static void kruskals(int V, List<Edge> edges) {
@@ -49,14 +48,14 @@ public class kruskalsAlgo {
         int noOfEdges = 0;
 
         SubSet[] subsets = new SubSet[V];
-        Edge[] res = new Edge[V];
+        Edge[] res = new Edge[V-1];
 
         // Create V subsets with single element
         for(int i=0; i<V; i++) {
             subsets[i] = new SubSet(i, 0);
         }
 
-        while(noOfEdges < V-1) {
+        while(noOfEdges < V-1 && j < edges.size()) {
             Edge nextEdge = edges.get(j);
             int x = findRoot(subsets, nextEdge.src);
             int y = findRoot(subsets, nextEdge.dest);
@@ -67,6 +66,11 @@ public class kruskalsAlgo {
                 noOfEdges++;
             }
             j++;
+        }
+
+        if (noOfEdges != V - 1) {
+            System.out.println("The graph is disconnected; MST cannot be formed.");
+            return;
         }
 
         System.out.println("Minimum Spanning Tree : ");
